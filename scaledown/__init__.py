@@ -1,60 +1,77 @@
-from .templates import Template, TemplateManager, get_default_manager as get_default_template_manager
-from .styles import (
-    Style, StyleManager, get_default_style_manager, get_enhanced_style_manager,
-    OptimizationStyle
-)
-from .api import ScaleDown
+import os
+from typing import Optional
 
-# Import optimization components
-try:
-    from .optimization import (
-        optimize_prompt, parse_optimizers, OPTIMIZER_PROMPTS,
-        get_optimizer_registry, PromptOptimizerRegistry
-    )
-    _optimization_available = True
-except ImportError:
-    _optimization_available = False
+# Global configuration state
+_API_KEY: Optional[str] = os.environ.get("SCALEDOWN_API_KEY")
 
-# Import tools for backward compatibility
-try:
-    from .tools import tools, LLMProviderFactory
-    _tools_available = True
-except ImportError:
-    _tools_available = False
+def set_api_key(api_key: str) -> None:
+    """Sets the global API key for ScaleDown."""
+    global _API_KEY
+    _API_KEY = api_key
 
-# Create a singleton instance for easy access with optimization enabled
-sd = ScaleDown(enable_optimization_styles=True)
+def get_api_key() -> Optional[str]:
+    """Retrieves the global API key."""
+    return _API_KEY
 
-# Export main classes
-__all__ = [
-    'Template',
-    'TemplateManager',
-    'Style',
-    'StyleManager',
-    'OptimizationStyle',
-    'ScaleDown',
-    'sd',
-    'get_default_template_manager',
-    'get_default_style_manager',
-    'get_enhanced_style_manager'
-]
+from .compressor import ScaleDownCompressor
 
-# Add optimization exports if available
-if _optimization_available:
-    __all__.extend([
-        'optimize_prompt',
-        'parse_optimizers',
-        'OPTIMIZER_PROMPTS',
-        'get_optimizer_registry',
-        'PromptOptimizerRegistry'
-    ])
+# from .templates import Template, TemplateManager, get_default_manager as get_default_template_manager
+# from .styles import (
+#     Style, StyleManager, get_default_style_manager, get_enhanced_style_manager,
+#     OptimizationStyle
+# )
+# from .api import ScaleDown
 
-# Add tools exports if available
-if _tools_available:
-    __all__.extend([
-        'tools',
-        'LLMProviderFactory'
-    ])
+# # Import optimization components
+# try:
+#     from .optimization import (
+#         optimize_prompt, parse_optimizers, OPTIMIZER_PROMPTS,
+#         get_optimizer_registry, PromptOptimizerRegistry
+#     )
+#     _optimization_available = True
+# except ImportError:
+#     _optimization_available = False
 
-# Version info
-__version__ = "0.2.0"
+# # Import tools for backward compatibility
+# try:
+#     from .tools import tools, LLMProviderFactory
+#     _tools_available = True
+# except ImportError:
+#     _tools_available = False
+
+# # Create a singleton instance for easy access with optimization enabled
+# sd = ScaleDown(enable_optimization_styles=True)
+
+# # Export main classes
+# __all__ = [
+#     'Template',
+#     'TemplateManager',
+#     'Style',
+#     'StyleManager',
+#     'OptimizationStyle',
+#     'ScaleDown',
+#     'sd',
+#     'get_default_template_manager',
+#     'get_default_style_manager',
+#     'get_enhanced_style_manager'
+# ]
+
+# # Add optimization exports if available
+# if _optimization_available:
+#     __all__.extend([
+#         'optimize_prompt',
+#         'parse_optimizers',
+#         'OPTIMIZER_PROMPTS',
+#         'get_optimizer_registry',
+#         'PromptOptimizerRegistry'
+#     ])
+
+# # Add tools exports if available
+# if _tools_available:
+#     __all__.extend([
+#         'tools',
+#         'LLMProviderFactory'
+#     ])
+
+# # Version info
+# __version__ = "0.2.0"

@@ -1,6 +1,10 @@
 [project]
 name = "scaledown"
-version = "0.1.2"
+version = "0.1.0"
+dependencies = [
+    "requests>=2.31.0",
+    "pydantic>=2.0.0",
+]
 authors = [
   { name="Soham Chatterjee", email="soham@scaldown.ai" },
 ]
